@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="login-overlay" class="active">
+        <div id="login-container">
+            <h2>Welcome to Advanced Chat</h2>
+            <p>Please choose a unique username to start.</p>
+            <form id="login-form">
+                <input type="text" id="username-input" placeholder="Enter your username" required autocomplete="off">
+                <button type="submit">Enter Chat</button>
+            </form>
+            <p id="login-error" class="error-message"></p>
+        </div>
+    </div>
+
+    <div id="chat-container">
+        <div id="sidebar-overlay"></div>
+        <aside id="sidebar-left">
+            <div class="sidebar-header">
+                <h3>Rooms</h3>
+            </div>
+            <ul id="room-list"></ul>
+            <form id="create-room-form">
+                <input type="text" id="new-room-input" placeholder="Create a new room" required>
+                <button type="submit">+</button>
+            </form>
+        </aside>
+
+        <main id="chat-main">
+            <header id="chat-header">
+                <button id="hamburger-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg>
+                </button>
+                <div class="header-room-info">
+                    <h2 id="room-name">Select a Room</h2>
+                    <p>Welcome, <strong id="display-username"></strong></p>
+                </div>
+            </header>
+            <div id="message-display-area">
+                <div class="welcome-message">
+                    <h3>Please select a room from the left panel to begin chatting.</h3>
+                </div>
+            </div>
+            <form id="message-form">
+                <input type="text" id="message-input" placeholder="Type your message here..." autocomplete="off" disabled>
+                <button type="submit" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" /></svg>
+                </button>
+            </form>
+        </main>
+        
+        <aside id="sidebar-right">
+             <div class="sidebar-header">
+                <h3>Online Users</h3>
+            </div>
+            <ul id="user-list"></ul>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
