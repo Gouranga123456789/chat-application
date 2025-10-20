@@ -1,0 +1,14 @@
+{
+  "name": "advanced-chat-application",
+  "version": "1.0.0",
+  "description": "An advanced real-time chat application.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.17.0"
+  }
+}
