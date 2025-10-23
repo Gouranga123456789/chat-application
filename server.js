@@ -4,7 +4,7 @@ const path = require('path');
 const WebSocket = require('ws');
 
 // --- Data Structures ---
-const clients = new Map(); // Stores WebSocket connection -> {username, room}
+const clients = new Map(); 
 const rooms = {
     'general': new Set(),
     'tech-talk': new Set(),
@@ -81,7 +81,6 @@ wss.on('connection', ws => {
 
             case 'join_room':
                 if (clientData) {
-                    // Leave previous room
                     if (clientData.room && rooms[clientData.room]) {
                         rooms[clientData.room].delete(ws);
                         broadcastUserList(clientData.room);
@@ -132,4 +131,5 @@ wss.on('connection', ws => {
 
 server.listen(8080, () => {
     console.log('Server is running on http://localhost:8080');
+
 });
