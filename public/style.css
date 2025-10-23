@@ -1,16 +1,16 @@
 :root {
     --font-family: 'Inter', sans-serif;
-    --background-color: #1a202c; /* Very dark blue */
-    --container-bg: #2d3748; /* Dark blue-gray */
-    --sidebar-bg: #1f2734; /* Slightly darker than main bg */
-    --primary-color: #4fd1c5; /* Teal */
-    --primary-hover: #38b2ac; /* Darker Teal */
-    --text-dark: #e2e8f0; /* Light gray for text */
-    --text-light: #a0aec0; /* Medium gray for metadata */
-    --border-color: #4a5568; /* Gray */
-    --my-message-bg: linear-gradient(135deg, #4c51bf 0%, #667eea 100%); /* Indigo gradient */
-    --other-message-bg: #4a5568; /* Gray */
-    --online-indicator: #48bb78; /* Green */
+    --background-color: #1a202c; 
+    --container-bg: #2d3748; 
+    --sidebar-bg: #1f2734; 
+    --primary-color: #4fd1c5; 
+    --primary-hover: #38b2ac; 
+    --text-dark: #e2e8f0;
+    --text-light: #a0aec0; 
+    --border-color: #4a5568; 
+    --my-message-bg: linear-gradient(135deg, #4c51bf 0%, #667eea 100%); 
+    --other-message-bg: #4a5568;
+    --online-indicator: #48bb78; 
     --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
@@ -161,7 +161,7 @@ button svg { fill: #1a202c; }
 #chat-main {
     display: flex;
     flex-direction: column;
-    min-height: 0; /* Prevents flexbox overflow issues */
+    min-height: 0; 
 }
 #chat-header {
     padding: 15px 20px;
@@ -179,7 +179,7 @@ button svg { fill: #1a202c; }
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    min-height: 0; /* <-- THIS IS THE FIX */
+    min-height: 0; 
 }
 .welcome-message {
     margin: auto;
@@ -265,3 +265,4 @@ button svg { fill: #1a202c; }
     #hamburger-btn { display: block; }
     #chat-header h2 { font-size: 1.2rem; }
 }
+
