@@ -27,7 +27,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100dvh; /* <-- FIX 1: Use 100dvh for mobile keyboard compatibility */
     overflow: hidden;
 }
 
@@ -224,7 +224,7 @@ button svg {
 #chat-main {
     display: flex;
     flex-direction: column;
-    min-height: 0;
+    min-height: 0; /* <-- FIX 2: Prevents flex container from overflowing */
 }
 
 #chat-header {
@@ -253,7 +253,7 @@ button svg {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    min-height: 0;
+    min-height: 0; /* <-- FIX 3: Allows this flex item to shrink and enables scrolling */
 }
 
 .welcome-message {
@@ -381,7 +381,7 @@ button svg {
 @media (max-width: 768px) {
     #chat-container {
         grid-template-columns: 1fr;
-        height: 100dvh;
+        height: 100%; /* <-- FIX 4: Make container fill the 100dvh body */
         width: 100vw;
         border-radius: 0;
     }
