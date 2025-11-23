@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- UI Element Selectors ---
     const loginOverlay = document.getElementById('login-overlay');
     const loginForm = document.getElementById('login-form');
     const usernameInput = document.getElementById('username-input');
+    const loginBtn = loginForm.querySelector('button'); 
     const loginError = document.getElementById('login-error');
+    
     const roomList = document.getElementById('room-list');
     const userList = document.getElementById('user-list');
     const createRoomForm = document.getElementById('create-room-form');
     const newRoomInput = document.getElementById('new-room-input');
+    
     const roomNameDisplay = document.getElementById('room-name');
     const displayUsername = document.getElementById('display-username');
     const messageDisplayArea = document.getElementById('message-display-area');
@@ -16,31 +18,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('message-input');
     const sendButton = messageForm.querySelector('button');
 
-    // New selectors for responsive sidebar
     const hamburgerBtn = document.getElementById('hamburger-btn');
     const sidebarLeft = document.getElementById('sidebar-left');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
 
-    // --- State Management ---
     let username = '';
     let currentRoom = '';
     let ws;
 
-    // --- WebSocket Connection ---
     function connect() {
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-        ws = new WebSocket(`${protocol}://${window.location.host}`);
-        ws.onopen = () => console.log('Connected to server');
-        ws.onclose = () => console.log('Disconnected from server');
+        ws = new WebSocket(`${protocol}://${window.location.host}`);
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Connecting...";
+
+        ws.onopen = () => {
+            console.log('Connected to server');
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Enter Chat";
+        };
+
+        ws.onclose = () => {
+            console.log('Disconnected from server');
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Disconnected (Refresh)";
+        };
+
         ws.onmessage = handleServerMessage;
     }
 
-    // --- Event Listeners ---
+    function sendSafe(data) {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(data));
+        } else {
+            console.warn("Connection not open. Cannot send message.");
+            loginError.textContent = "Connection lost. Please refresh.";
+        }
+    }
+
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const enteredUsername = usernameInput.value.trim();
         if (enteredUsername) {
-            ws.send(JSON.stringify({ type: 'login', username: enteredUsername }));
+            sendSafe({ type: 'login', username: enteredUsername });
         }
     });
 
@@ -48,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const roomName = newRoomInput.value.trim();
         if (roomName) {
-            ws.send(JSON.stringify({ type: 'create_room', room: roomName }));
+            sendSafe({ type: 'create_room', room: roomName });
             newRoomInput.value = '';
         }
     });
@@ -57,12 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const message = messageInput.value.trim();
         if (message && currentRoom) {
-            ws.send(JSON.stringify({ type: 'send_message', message }));
+            sendSafe({ type: 'send_message', message });
             messageInput.value = '';
         }
     });
 
-    // Event listeners for hamburger menu
     hamburgerBtn.addEventListener('click', () => {
         sidebarLeft.classList.toggle('sidebar-open');
         sidebarOverlay.classList.toggle('active');
@@ -73,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebarOverlay.classList.remove('active');
     });
 
-    // --- Core Functions ---
     function handleServerMessage(event) {
         const data = JSON.parse(event.data);
         switch (data.type) {
@@ -95,9 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function joinRoom(roomName) {
         if (roomName === currentRoom) return;
         currentRoom = roomName;
-        ws.send(JSON.stringify({ type: 'join_room', room: roomName }));
+        sendSafe({ type: 'join_room', room: roomName });
 
-        // Update UI
         roomNameDisplay.textContent = roomName;
         messageDisplayArea.innerHTML = '';
         welcomeMessage.style.display = 'none';
@@ -108,14 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
             li.classList.toggle('active', li.dataset.room === roomName);
         });
 
-        // Close mobile sidebar after room selection
         if (sidebarLeft.classList.contains('sidebar-open')) {
             sidebarLeft.classList.remove('sidebar-open');
             sidebarOverlay.classList.remove('active');
         }
     }
 
-    // --- UI Update Functions ---
     function updateRoomList(rooms) {
         roomList.innerHTML = '';
         rooms.forEach(room => {
@@ -162,13 +177,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function formatMessageText(text) {
         let escapedText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        escapedText = escapedText.replace(/\*(.*?)\*/g, '<strong>$1</strong>'); // Bold
-        escapedText = escapedText.replace(/_(.*?)_/g, '<em>$1</em>');     // Italics
+        escapedText = escapedText.replace(/\*(.*?)\*/g, '<strong>$1</strong>'); 
+        escapedText = escapedText.replace(/_(.*?)_/g, '<em>$1</em>');    
         const urlRegex = /(https?:\/\/[^\s]+)/g;
-        return escapedText.replace(urlRegex, '<a href="$1" target="_blank">$1</a>'); // Links
+        return escapedText.replace(urlRegex, '<a href="$1" target="_blank">$1</a>'); 
     }
 
-    // --- Initial Connection ---
     connect();
-
 });
